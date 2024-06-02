@@ -115,5 +115,21 @@
         "email": "baricho@school.ac.ke"
       }
     }
+  ],
+  "collections": [
+    {
+      "invoiceNumber": "INV-001",
+      "collectionNumber": "COL-001",
+      "collectionDate": "2024-06-15",
+      "status": "Valid",
+      "amountCollected": 200000
+    },
+    {
+      "invoiceNumber": "INV-002",
+      "collectionNumber": "COL-002",
+      "collectionDate": "2024-06-20",
+      "status": "Bounced",
+      "amountCollected": 150000
+    }
   ]
 }

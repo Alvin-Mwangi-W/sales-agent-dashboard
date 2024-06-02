@@ -4,7 +4,7 @@ import { GetCollectionData, GetInvoiceData, GetSchoolData, GetSignupData } from 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000" }),
   reducerPath: "api",
-  tagTypes: ["Signups", "Invoices", "Schools"],
+  tagTypes: ["Signups", "Invoices", "Schools", "Collections"],
   endpoints: (builder) => ({
     getSignups: builder.query<GetSignupData, void>({
       query: () => "/signupData",
@@ -19,8 +19,8 @@ export const api = createApi({
       providesTags: ["Schools"],
     }), 
     getCollections: builder.query<GetCollectionData, void>({
-      query: () => "/schools",
-      providesTags: ["Schools"],
+      query: () => "/collections",
+      providesTags: ["Collections"],
     }), 
   })
 });

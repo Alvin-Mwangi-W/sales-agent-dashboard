@@ -36,9 +36,11 @@ export interface School {
     };
 }
 export interface Collection {
-    schoolName: string;
-    amountCollected: number;
+    invoiceNumber: string;
+    collectionNumber: string;
     collectionDate: string;
+    status: "Valid" | "Bounced";
+    amountCollected: number;
 }
   
 export type GetSignupData = ProductSignup[];
