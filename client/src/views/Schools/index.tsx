@@ -1,13 +1,14 @@
-import { Box } from '@mui/material'
-import React from 'react'
-import SideMenu from '../SideMenu'
+import SchoolInvoices from "./SchooInvoices";
+import SchoolsView from "./SchoolsView";
+
 
 const Schools = () => {
   return (
-    <Box>
-      <SideMenu />
-    </Box>
-  )
-}
+    <>
+    <SchoolsView />
+    <SchoolInvoices theme={"#48494e"}/> 
+    </>
+  );
+};
 
-export default Schools
+export default Schools;

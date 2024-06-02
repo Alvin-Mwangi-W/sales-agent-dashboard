@@ -1,0 +1,119 @@
+{
+  "metrics": {
+    "collections": 150,
+    "signups": {
+      "total": 100,
+      "breakdown": {
+        "Analytics": 40,
+        "Finance": 30,
+        "Timetable": 30
+      }
+    },
+    "revenue": {
+      "total": 200000,
+      "breakdown": {
+        "Analytics": 800000,
+        "Finance": 700000,
+        "Timetable": 500000
+      }
+    },
+    "bouncedCheques": 5
+  },
+  "signupData": [
+    {
+      "product": "Zeraki Analytics",
+      "targetSignups": 100,
+      "actualSignups": 70,
+      "schools": [
+        { "type": "Primary", "signups": 50 },
+        { "type": "Secondary", "signups": 40 },
+        { "type": "IGCSE", "signups": 30 }
+      ]
+    },
+    {
+      "product": "Zeraki Finance",
+      "targetSignups": 150,
+      "actualSignups": 100,
+      "schools": [
+        { "type": "Primary", "signups": 60 },
+        { "type": "Secondary", "signups": 45 },
+        { "type": "IGCSE", "signups": 35 }
+      ]
+    },
+    {
+      "product": "Zeraki Timetable",
+      "targetSignups": 80,
+      "actualSignups": 50,
+      "schools": [
+        { "type": "Primary", "signups": 70 },
+        { "type": "Secondary", "signups": 50 },
+        { "type": "IGCSE", "signups": 40 }
+      ]
+    }
+  ],
+  "invoices": [
+    {
+      "schoolName": "Alliance Boys",
+      "invoiceNumber": "INV-001",
+      "invoiceItem": "Zeraki Analytics",
+      "amountDue": 500000,
+      "paidAmount": 200000,
+      "balance": 300000,
+      "creationDate": "2024-06-01",
+      "dueDate": "2024-07-01",
+      "completionStatus": "Pending",
+      "daysUntilDue": 30,
+      "actions": []
+    },
+    {
+      "schoolName": "Alliance Boys",
+      "invoiceNumber": "INV-002",
+      "invoiceItem": "Zeraki Finance",
+      "amountDue": 300000,
+      "paidAmount": 300000,
+      "balance": 0,
+      "creationDate": "2024-06-15",
+      "dueDate": "2024-07-15",
+      "completionStatus": "Completed",
+      "daysUntilDue": 45,
+      "actions": []
+    },
+    {
+      "schoolName": "Baricho Boys",
+      "invoiceNumber": "INV-003",
+      "invoiceItem": "Zeraki Finance",
+      "amountDue": 75000,
+      "paidAmount": 0,
+      "balance": 75000,
+      "creationDate": "2024-06-10",
+      "dueDate": "2024-07-10",
+      "completionStatus": "Pending",
+      "daysUntilDue": 40,
+      "actions": []
+    }
+  ],
+  "schools": [
+    {
+      "name": "Alliance Boys",
+      "type": "Secondary",
+      "product": "Zeraki Analytics",
+      "county": "Kiambu",
+      "registrationDate": "2010-01-01",
+      "contactInformation": {
+        "phone": "0123456789",
+        "email": "alliance@school.ac.ke"
+      }
+    },
+    {
+      "name": "Baricho Boys",
+      "type": "Secondary",
+      "product": "Zeraki Finance",
+      "county": "Kirinyaga",
+      "registrationDate": "2011-02-15",
+      "contactInformation": {
+        "phone": "0987654321",
+        "email": "baricho@school.ac.ke"
+      }
+    }
+  ]
+}

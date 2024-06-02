@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+//@ts-expect-error
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Palette, PaletteColor } from "@mui/material/styles/createPalette";
 
