@@ -1,7 +1,7 @@
 import { Collections } from "@mui/icons-material";
 import SchoolInvoices from "./SchooInvoices";
 import SchoolsView from "./SchoolsView";
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 
 
 const Schools = () => {
