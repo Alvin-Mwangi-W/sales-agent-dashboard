@@ -1,7 +1,7 @@
 import { Collections } from "@mui/icons-material";
 import SchoolInvoices from "./SchooInvoices";
 import SchoolsView from "./SchoolsView";
-import { useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 
 
 const Schools = () => {
@@ -10,7 +10,9 @@ const Schools = () => {
     <>
     <SchoolsView />
     <SchoolInvoices theme={palette.background.default}/> 
-    <Collections />
+    <Box>
+      <Collections />
+    </Box>
     </>
   );
 };

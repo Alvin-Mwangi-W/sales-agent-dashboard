@@ -1,12 +1,12 @@
-import { createTheme } from "@mui/material/styles"
-import { themeSettings } from "./theme"
-import { useMemo } from "react"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { ThemeProvider } from "@emotion/react"
-import { Box, CssBaseline } from "@mui/material"
-import Dashboard from "./views/Dashboard"
-import Schools from "./views/Schools"
-import SideMenu from "./views/SideMenu"
+import { createTheme } from "@mui/material/styles";
+import { themeSettings } from "./theme";
+import { useMemo } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ThemeProvider } from "@emotion/react";
+import { Box, CssBaseline } from "@mui/material";
+import Dashboard from "./views/Dashboard";
+import Schools from "./views/Schools";
+import SideMenu from "./views/SideMenu";
 
 function App() {
   const theme = useMemo(() => createTheme(themeSettings), []);
@@ -18,8 +18,10 @@ function App() {
           <CssBaseline />
           <Box sx={{ display: 'flex' }}>
             <SideMenu />
-            <Box sx={{ flexGrow: 1, padding: '1rem' }}>
-              {/* <NavBar /> */}
+            <Box
+              component="main"
+              sx={{ flexGrow: 1, p: 3, marginLeft: { sm: `${20}px` } }}
+            >
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />
@@ -30,7 +32,7 @@ function App() {
         </ThemeProvider>
       </BrowserRouter>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

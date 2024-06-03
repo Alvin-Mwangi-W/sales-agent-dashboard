@@ -1,18 +1,35 @@
-// src/views/SideMenu.tsx
-import { Box, List, ListItem, ListItemText, ListItemIcon, Divider } from '@mui/material';
-import { Dashboard, School } from '@mui/icons-material';
+import React, { useState } from 'react';
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  Drawer,
+  IconButton,
+} from '@mui/material';
+import { Dashboard, School, Menu } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
+const drawerWidth = 240;
+
 const SideMenu = () => {
-  return (
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = (
     <Box
       sx={{
-        width: 250,
+        width: drawerWidth,
         height: '100%',
         backgroundColor: 'background.light',
         padding: '1rem',
-        color: 'white', 
-        position: ''
+        color: 'white',
+        mr: 0,
       }}
     >
       <List>
@@ -31,6 +48,50 @@ const SideMenu = () => {
         </ListItem>
       </List>
     </Box>
+  );
+
+  return (
+    <>
+      <IconButton
+        color="inherit"
+        aria-label="open drawer"
+        edge="start"
+        onClick={handleDrawerToggle}
+        sx={{ display: { sm: 'none' }, position: 'fixed', top: 16, left: 16 }}
+      >
+        <Menu />
+      </IconButton>
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="mailbox folders"
+      >
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+    </>
   );
 };
 

@@ -1,36 +1,32 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+import React from "react";
+
+import { GridCheckCircleIcon } from "@mui/x-data-grid";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useGetCollectionsQuery, useUpdateCollectionStatusMutation } from "@/state/api";
-import { Collection } from "@/state/types";
-import {
+import { Collection } from "@/state/types"; 
+import { 
+  Typography,
+  Container,
   Box,
-  
-  IconButton,
+  TableContainer,
   Paper,
   Table,
-  TableBody,
-  TableCell,
-  TableContainer,
   TableHead,
   TableRow,
+  TableCell,
+  TableBody,
   Tooltip,
-  Typography,
-} from "@mui/material";
-import { GridCheckCircleIcon } from "@mui/x-data-grid";
-import { Cancel } from "@mui/icons-material";
-import DashboardBox from "@/components/DashboardBox";
+  IconButton,
+  useTheme
+ } from "@mui/material";
 
-const Collections = () => {
-  const {
-    data: collections = [],
-    isLoading,
-    isError,
-  } = useGetCollectionsQuery();
+const Collections: React.FC = () => {
+  const theme = useTheme();
+  const { data: collections = [], isLoading, isError } = useGetCollectionsQuery();
   const [updateCollectionStatus] = useUpdateCollectionStatusMutation();
 
-  if (isLoading)
-    return <Typography variant="h6">Loading collections...</Typography>;
-  if (isError)
-    return <Typography variant="h6">Error fetching collections</Typography>;
+  if (isLoading) return <Typography variant="h6">Loading collections...</Typography>;
+  if (isError) return <Typography variant="h6">Error fetching collections</Typography>;
 
   const handleStatusChange = (collection: Collection, newStatus: "Valid" | "Bounced") => {
     updateCollectionStatus({ collectionNumber: collection.collectionNumber, status: newStatus })
@@ -44,7 +40,7 @@ const Collections = () => {
   };
 
   return (
-    <DashboardBox maxWidth="lg">
+    <Container maxWidth="lg">
       <Box mt={3}>
         <Typography variant="h5" gutterBottom>
           Collections
@@ -70,26 +66,21 @@ const Collections = () => {
                   <TableCell>
                     {collection.status === "Valid" ? (
                       <Tooltip title="Valid" placement="top">
-                        <GridCheckCircleIcon style={{ color: "green" }} />
+                        <GridCheckCircleIcon style={{ color: theme.palette.primary.main }} />
                       </Tooltip>
                     ) : (
                       <Tooltip title="Bounced" placement="top">
-                        <Cancel style={{ color: "red" }} />
+                        <HighlightOffIcon style={{ color: theme.palette.error.main }} />
                       </Tooltip>
                     )}
                   </TableCell>
                   <TableCell>{collection.amountCollected}</TableCell>
                   <TableCell>
-                    <IconButton
-                      onClick={() =>
-                        // @ts-expect-error
-                        handleStatusChange(collection, !collection.status)
-                      }
-                    >
+                    <IconButton onClick={() => handleStatusChange(collection, collection.status === "Valid" ? "Bounced" : "Valid")}>
                       {collection.status === "Valid" ? (
-                        <Cancel style={{ color: "red" }} />
+                        <HighlightOffIcon style={{ color: theme.palette.error.main }} />
                       ) : (
-                        <GridCheckCircleIcon style={{ color: "green" }} />
+                        <GridCheckCircleIcon style={{ color: theme.palette.primary.main }} />
                       )}
                     </IconButton>
                   </TableCell>
@@ -99,7 +90,7 @@ const Collections = () => {
           </Table>
         </TableContainer>
       </Box>
-    </DashboardBox>
+    </Container>
   );
 };
 
