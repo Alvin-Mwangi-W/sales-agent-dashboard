@@ -58,6 +58,7 @@ export interface Metrics {
     };
     bouncedCheques: number;
 }  
+ 
 
 export type GetMetricsData = Metrics;
 export type GetSignupData = ProductSignup[];

@@ -41,7 +41,7 @@ const UpcomingInvoices = () => {
     (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
 
   return (
-    <Box>
+    <Box mt={"20px"}>
       <Typography variant="h4" gutterBottom>
         Upcoming Invoices
       </Typography>

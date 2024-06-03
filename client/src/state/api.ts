@@ -3,15 +3,15 @@ import {
   Collection,
   GetCollectionData,
   GetInvoiceData,
-  GetMetricsData,
   GetSchoolData,
   GetSignupData,
+  GetMetricsData,
 } from "./types";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001" }),
   reducerPath: "api",
-  tagTypes: ["Signups", "Invoices", "Schools", "Collections", "Collections", "Metrics"],
+  tagTypes: ["Signups", "Invoices", "Schools", "Collections", "Metrics"],
   endpoints: (builder) => ({
     getSignups: builder.query<GetSignupData, void>({
       query: () => "/signupData",
@@ -31,15 +31,16 @@ export const api = createApi({
     }),
     updateCollectionStatus: builder.mutation<
       Collection,
-      Partial<Collection> & Pick<Collection, "collectionNumber">>
-    ({query: ({ collectionNumber, ...patch }) => ({
+      Partial<Collection> & Pick<Collection, "collectionNumber">
+    >({
+      query: ({ collectionNumber, ...patch }) => ({
         url: `/collections/${collectionNumber}`,
         method: "PATCH",
         body: patch,
       }),
       invalidatesTags: ["Collections"],
     }),
-    getMetrics: builder.query<GetMetricsData, void>({ 
+    getMetrics: builder.query<GetMetricsData, void>({
       query: () => "/metrics",
       providesTags: ["Metrics"],
     }),
@@ -47,10 +48,10 @@ export const api = createApi({
 });
 
 export const {
-  useGetMetricsQuery,
   useGetSignupsQuery,
   useGetInvoicesQuery,
   useGetSchoolsQuery,
   useGetCollectionsQuery,
   useUpdateCollectionStatusMutation,
+  useGetMetricsQuery,
 } = api;

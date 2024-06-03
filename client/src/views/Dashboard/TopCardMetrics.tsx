@@ -10,7 +10,7 @@ const TopCardMetrics = () => {
   if (isError) return <Typography variant="h6">Error fetching metrics</Typography>;
 
   return (
-    <Box mt={3}>
+    <Box mt={3} mb={"20px"}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={3}>
           <Card style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.grey[900] }}>

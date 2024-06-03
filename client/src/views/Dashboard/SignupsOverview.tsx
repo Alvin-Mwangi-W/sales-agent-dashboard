@@ -32,7 +32,6 @@ const SignupsOverview = () => {
     }, [signupDistribution]);
     
   return (
-    <>
     <ResponsiveContainer width={"100%"} height={"30%"}>
         <BarChart width={730} height={250} data={data}>
             <CartesianGrid vertical={false}  strokeDasharray={palette.grey[800]}/>
@@ -51,7 +50,6 @@ const SignupsOverview = () => {
             <Bar dataKey="IGCSE" fill={palette.primary[400]} />
         </BarChart>
     </ResponsiveContainer>
-    </>
   )
 }
 
