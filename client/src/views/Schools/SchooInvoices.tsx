@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useState } from "react";
-import { useGetInvoicesQuery } from "@/state/api";
-import { Invoice } from "@/state/types";
 import {
   Box,
   Typography,
@@ -25,38 +22,19 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-//import { createTheme } from "@mui/material/styles";
+import { useGetInvoicesQuery, useDeleteInvoiceMutation } from "@/state/api"; // Import useDeleteInvoiceMutation
+import { Invoice } from "@/state/types";
 import { themeSettings } from "@/theme";
 
-// //@ts-expect-error
-// const theme = createTheme({
-//   tableContainer: {
-//     backgroundColor: "#614822",
-//   },
-//   tableHeaderCell: {
-//     color: "white",
-//     fontWeight: "bold",
-//   },
-//   tableRow: {
-//     "&:nth-of-type(odd)": {
-//       backgroundColor: "#614822",
-//     },
-//   },
-//   tableCell: {
-//     color: "white",
-//   },
-// });
-
-//@ts-expect-error
-const SchoolInvoices = ({ theme }) => {
-  const { data: invoices, isLoading, error } = useGetInvoicesQuery();
-
+const SchoolInvoices = () => {
+  const { data: invoices, isLoading, error, refetch } = useGetInvoicesQuery();
+  const [deleteInvoice] = useDeleteInvoiceMutation(); // Mutation hook for deleting an invoice
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
 
   const handleOpenAddDialog = () => {
+    setSelectedInvoice(null);
     setOpenAddDialog(true);
   };
 
@@ -74,19 +52,36 @@ const SchoolInvoices = ({ theme }) => {
     setOpenEditDialog(false);
   };
 
-  const handleDeleteInvoice = (invoice: Invoice) => {
-    // Implement delete logic here
-    console.log(`Deleting invoice ${invoice.invoiceNumber}`);
+  const handleDeleteInvoice = async (invoice: Invoice) => {
+    try {
+      // Call the deleteInvoice mutation function with the invoice object
+      await deleteInvoice(invoice);
+      console.log(`Deleted invoice ${invoice.invoiceNumber}`);
+      await refetch(); // Refetch the invoices after deletion
+    } catch (error) {
+      console.error("Error deleting invoice:", error);
+    }
   };
 
-  const handleSaveInvoice = () => {
-    // Implement save logic for adding or editing invoice
-    handleCloseAddDialog();
-    handleCloseEditDialog();
+  const handleSaveInvoice = async () => {
+    try {
+      if (selectedInvoice) {
+        // Handle update logic if selectedInvoice exists
+        console.log("Updating invoice:", selectedInvoice);
+      } else {
+        // Handle add new invoice logic if selectedInvoice does not exist
+        console.log("Adding new invoice:", selectedInvoice);
+      }
+      handleCloseAddDialog();
+      handleCloseEditDialog();
+      await refetch(); 
+    } catch (error) {
+      console.error("Error saving invoice:", error);
+    }
   };
 
   if (isLoading) return <Typography>Loading...</Typography>;
-  //@ts-expect-error
+  // @ts-expect-error
   if (error) return <Typography>Error: {error.message}</Typography>;
 
   return (
@@ -166,7 +161,7 @@ const SchoolInvoices = ({ theme }) => {
             margin="normal"
             label="Invoice Number"
             fullWidth
-            disabled={selectedInvoice ? true : false} // Disable for editing
+            disabled={selectedInvoice ? true : false} 
             value={selectedInvoice ? selectedInvoice.invoiceNumber : ''}
             onChange={(e) => setSelectedInvoice((prevState) => ({
               ...prevState!,

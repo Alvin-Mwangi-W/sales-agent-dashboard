@@ -40,6 +40,13 @@ export const api = createApi({
       }),
       invalidatesTags: ["Collections"],
     }),
+    deleteInvoice: builder.mutation<void, Invoice>({
+      query: (invoice) => ({
+        url: `/invoices/${invoice.invoiceNumber}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Invoices"],
+    }),
     getMetrics: builder.query<GetMetricsData, void>({
       query: () => "/metrics",
       providesTags: ["Metrics"],
@@ -53,5 +60,6 @@ export const {
   useGetSchoolsQuery,
   useGetCollectionsQuery,
   useUpdateCollectionStatusMutation,
+  useDeleteInvoiceMutation, 
   useGetMetricsQuery,
 } = api;
