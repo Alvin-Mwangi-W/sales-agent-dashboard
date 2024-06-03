@@ -6,6 +6,7 @@ import {
   GetSchoolData,
   GetSignupData,
   GetMetricsData,
+  Invoice,
 } from "./types";
 
 export const api = createApi({
