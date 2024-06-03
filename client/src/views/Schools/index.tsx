@@ -5,11 +5,10 @@ import { Box, useTheme } from "@mui/material";
 
 
 const Schools = () => {
-  const palette = useTheme().palette;
   return (
     <>
     <SchoolsView />
-    <SchoolInvoices theme={palette.background.default}/> 
+    <SchoolInvoices /> 
     <Box>
       <Collections />
     </Box>
