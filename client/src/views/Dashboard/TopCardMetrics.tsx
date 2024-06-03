@@ -1,52 +1,58 @@
-import { useEffect, useState } from "react";
-import { Box, Grid } from "@mui/material";
-import MetricCard from "../../components/MetricCard";
-import axios from "axios";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { Box, Card, CardContent, Grid, Typography, useTheme } from "@mui/material";
+import { useGetMetricsQuery } from "../../state/api";
 
 const TopCardMetrics = () => {
-    const [metrics, setMetrics] = useState({
-        collections: 0,
-        signups: { total: 0, breakdown: { Analytics: 0, Finance: 0, Timetable: 0 } },
-        revenue: { total: 0, breakdown: { Analytics: 0, Finance: 0, Timetable: 0 } },
-        bouncedCheques: 0,
-      });
-    
-      useEffect(() => {
-        // Fetching data from the JSON server
-        axios.get("http://localhost:3000/metrics")
-          .then((response) => {
-            setMetrics(response.data);
-          })
-          .catch((error) => {
-            console.error("Error fetching metrics data:", error);
-          });
-      }, []);
+  const theme = useTheme();
+  const { data: metrics, isLoading, isError } = useGetMetricsQuery();
+
+  if (isLoading) return <Typography variant="h6">Loading metrics...</Typography>;
+  if (isError) return <Typography variant="h6">Error fetching metrics</Typography>;
+
   return (
-    <Box>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6} lg={3}>
-          <MetricCard title="Collections" value={metrics.collections} breakdown={undefined} />
+    <Box mt={3}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6} md={3}>
+          <Card style={{ backgroundColor: theme.palette.primary.main, color: theme.palette.grey[900] }}>
+            <CardContent>
+              <Typography style={{color: theme.palette.grey[900]}}  variant="h5">Collections</Typography>
+              {/* @ts-expect-error */}
+              <Typography variant="h6">{metrics.collections}</Typography>
+            </CardContent>
+          </Card>
         </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <MetricCard
-            title="Sign-ups"
-            value={metrics.signups.total}
-            breakdown={metrics.signups.breakdown}
-          />
+        <Grid item xs={12} sm={6} md={3}>
+          <Card style={{ backgroundColor: theme.palette.secondary.main, color: theme.palette.grey[900] }}>
+            <CardContent>
+              <Typography style={{color: theme.palette.grey[900]}}  variant="h5">Sign-ups</Typography>
+              {/* @ts-expect-error */}
+              <Typography variant="h6">{metrics.signups.total}</Typography>
+            </CardContent>
+          </Card>
         </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <MetricCard
-            title="Total Revenue"
-            value={metrics.revenue.total}
-            breakdown={metrics.revenue.breakdown}
-          />
+        <Grid item xs={12} sm={6} md={3}>
+          <Card style={{ backgroundColor: theme.palette.info.main, color: theme.palette.grey[900] }}>
+            <CardContent>
+              <Typography style={{color: theme.palette.grey[900]}}  variant="h5">Revenue</Typography>
+              {/* @ts-expect-error */}
+              <Typography variant="h6">{metrics.revenue.total}</Typography>
+            </CardContent>
+          </Card>
         </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <MetricCard title="Bounced Cheques" value={metrics.bouncedCheques} breakdown={undefined} />
+        <Grid item xs={12} sm={6} md={3}>
+          <Card style={{ backgroundColor: theme.palette.error.main, color: theme.palette.error.contrastText }}>
+            <CardContent>
+              <Typography style={{color: theme.palette.grey[900]}} variant="h5">Bounced Cheques</Typography>
+              <Typography variant="h6" style={{ color: theme.palette.error.contrastText }}>
+                {/* @ts-expect-error */}
+                {metrics.bouncedCheques}
+              </Typography>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     </Box>
-  )
-}
+  );
+};
 
-export default TopCardMetrics
+export default TopCardMetrics;

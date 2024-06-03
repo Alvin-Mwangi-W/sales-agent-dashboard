@@ -42,7 +42,24 @@ export interface Collection {
     status: "Valid" | "Bounced";
     amountCollected: number;
 }
-  
+export interface Metrics {
+    collections: number;
+    signups: {
+      total: number;
+      breakdown: {
+        [key: string]: number;
+      };
+    };
+    revenue: {
+      total: number;
+      breakdown: {
+        [key: string]: number;
+      };
+    };
+    bouncedCheques: number;
+}  
+
+export type GetMetricsData = Metrics;
 export type GetSignupData = ProductSignup[];
 export type GetSchoolData = School[];
 export type GetInvoiceData = Invoice[];

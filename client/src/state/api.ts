@@ -1,10 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { GetCollectionData, GetInvoiceData, GetSchoolData, GetSignupData } from "./types";
+import {
+  Collection,
+  GetCollectionData,
+  GetInvoiceData,
+  GetMetricsData,
+  GetSchoolData,
+  GetSignupData,
+} from "./types";
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001" }),
   reducerPath: "api",
-  tagTypes: ["Signups", "Invoices", "Schools", "Collections"],
+  tagTypes: ["Signups", "Invoices", "Schools", "Collections", "Collections", "Metrics"],
   endpoints: (builder) => ({
     getSignups: builder.query<GetSignupData, void>({
       query: () => "/signupData",
@@ -17,12 +24,33 @@ export const api = createApi({
     getSchools: builder.query<GetSchoolData, void>({
       query: () => "/schools",
       providesTags: ["Schools"],
-    }), 
+    }),
     getCollections: builder.query<GetCollectionData, void>({
       query: () => "/collections",
       providesTags: ["Collections"],
-    }), 
-  })
+    }),
+    updateCollectionStatus: builder.mutation<
+      Collection,
+      Partial<Collection> & Pick<Collection, "collectionNumber">>
+    ({query: ({ collectionNumber, ...patch }) => ({
+        url: `/collections/${collectionNumber}`,
+        method: "PATCH",
+        body: patch,
+      }),
+      invalidatesTags: ["Collections"],
+    }),
+    getMetrics: builder.query<GetMetricsData, void>({ 
+      query: () => "/metrics",
+      providesTags: ["Metrics"],
+    }),
+  }),
 });
 
-export const { useGetSignupsQuery, useGetInvoicesQuery, useGetSchoolsQuery, useGetCollectionsQuery } = api;
+export const {
+  useGetMetricsQuery,
+  useGetSignupsQuery,
+  useGetInvoicesQuery,
+  useGetSchoolsQuery,
+  useGetCollectionsQuery,
+  useUpdateCollectionStatusMutation,
+} = api;
