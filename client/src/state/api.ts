@@ -9,7 +9,7 @@ import {
 } from "./types";
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://sales-agent-dashboard-server.onrender.com" }),
   reducerPath: "api",
   tagTypes: ["Signups", "Invoices", "Schools", "Collections", "Metrics"],
   endpoints: (builder) => ({
