@@ -1,12 +1,7 @@
-import React from "react";
-
-import { GridCheckCircleIcon } from "@mui/x-data-grid";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useGetCollectionsQuery, useUpdateCollectionStatusMutation } from "@/state/api";
-import { Collection } from "@/state/types"; 
+import { Collection } from "@/state/types";
 import { 
   Typography,
-  Container,
   Box,
   TableContainer,
   Paper,
@@ -18,9 +13,12 @@ import {
   Tooltip,
   IconButton,
   useTheme
- } from "@mui/material";
+} from "@mui/material";
+import GridCheckCircleIcon from "@mui/icons-material/CheckCircle"; // Corrected import
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { ResponsiveContainer } from "recharts";
 
-const Collections: React.FC = () => {
+const CollectionsTable = () => {
   const theme = useTheme();
   const { data: collections = [], isLoading, isError } = useGetCollectionsQuery();
   const [updateCollectionStatus] = useUpdateCollectionStatusMutation();
@@ -40,7 +38,7 @@ const Collections: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="lg">
+    <ResponsiveContainer width="100%" height={"80%"}>
       <Box mt={3}>
         <Typography variant="h5" gutterBottom>
           Collections
@@ -48,21 +46,21 @@ const Collections: React.FC = () => {
         <TableContainer component={Paper}>
           <Table aria-label="collections table">
             <TableHead>
-              <TableRow>
-                <TableCell>Invoice Number</TableCell>
-                <TableCell>Collection Number</TableCell>
-                <TableCell>Date of Collection</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell>Actions</TableCell>
+              <TableRow sx={{ backgroundColor: theme.palette.grey[900] }}>
+                <TableCell sx={{ color: theme.palette.grey[300] }}>Invoice Number</TableCell>
+                <TableCell sx={{ color: theme.palette.grey[300] }}>Collection Number</TableCell>
+                <TableCell sx={{ color: theme.palette.grey[300] }}>Date of Collection</TableCell>
+                <TableCell sx={{ color: theme.palette.grey[300] }}>Status</TableCell>
+                <TableCell sx={{ color: theme.palette.grey[300] }}>Amount</TableCell>
+                <TableCell sx={{ color: theme.palette.grey[300] }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {collections.map((collection) => (
-                <TableRow key={collection.collectionNumber}>
-                  <TableCell>{collection.invoiceNumber}</TableCell>
-                  <TableCell>{collection.collectionNumber}</TableCell>
-                  <TableCell>{collection.collectionDate}</TableCell>
+                <TableRow key={collection.collectionNumber} sx={{ backgroundColor: theme.palette.grey[800] }}>
+                  <TableCell sx={{ color: theme.palette.grey[300] }}>{collection.invoiceNumber}</TableCell>
+                  <TableCell sx={{ color: theme.palette.grey[300] }}>{collection.collectionNumber}</TableCell>
+                  <TableCell sx={{ color: theme.palette.grey[300] }}>{collection.collectionDate}</TableCell>
                   <TableCell>
                     {collection.status === "Valid" ? (
                       <Tooltip title="Valid" placement="top">
@@ -74,9 +72,11 @@ const Collections: React.FC = () => {
                       </Tooltip>
                     )}
                   </TableCell>
-                  <TableCell>{collection.amountCollected}</TableCell>
+                  <TableCell sx={{ color: theme.palette.grey[300] }}>{collection.amountCollected}</TableCell>
                   <TableCell>
-                    <IconButton onClick={() => handleStatusChange(collection, collection.status === "Valid" ? "Bounced" : "Valid")}>
+                    <IconButton
+                      onClick={() => handleStatusChange(collection, collection.status === "Valid" ? "Bounced" : "Valid")}
+                    >
                       {collection.status === "Valid" ? (
                         <HighlightOffIcon style={{ color: theme.palette.error.main }} />
                       ) : (
@@ -90,8 +90,8 @@ const Collections: React.FC = () => {
           </Table>
         </TableContainer>
       </Box>
-    </Container>
+    </ResponsiveContainer>
   );
 };
 
-export default Collections;
+export default CollectionsTable;

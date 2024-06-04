@@ -1,17 +1,14 @@
-import { Collections } from "@mui/icons-material";
 import SchoolInvoices from "./SchooInvoices";
 import SchoolsView from "./SchoolsView";
-import { Box } from "@mui/material";
+import CollectionsTable from "./CollectionsTable";
 
 
 const Schools = () => {
   return (
     <>
     <SchoolsView />
-    <SchoolInvoices /> 
-    <Box>
-      <Collections />
-    </Box>
+    <SchoolInvoices theme={"grey"} /> 
+    <CollectionsTable />    
     </>
   );
 };
