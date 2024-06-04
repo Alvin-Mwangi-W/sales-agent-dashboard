@@ -32,11 +32,21 @@ import { themeSettings } from "@/theme";
 //@ts-expect-error
 const SchoolInvoices = ({ theme }) => {
   const { data: invoicesData, isLoading, error } = useGetInvoicesQuery();
-
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+  const [newInvoice, setNewInvoice] = useState<Partial<Invoice>>({
+    invoiceNumber: "",
+    invoiceItem: "",
+    creationDate: "",
+    dueDate: "",
+    amountDue: 0,
+    paidAmount: 0,
+    balance: 0,
+    completionStatus: "",
+    daysUntilDue: 0
+  });
 
   useEffect(() => {
     if (invoicesData) {
@@ -45,7 +55,17 @@ const SchoolInvoices = ({ theme }) => {
   }, [invoicesData]);
 
   const handleOpenAddDialog = () => {
-    setSelectedInvoice(null);
+    setNewInvoice({
+      invoiceNumber: "",
+      invoiceItem: "",
+      creationDate: "",
+      dueDate: "",
+      amountDue: 0,
+      paidAmount: 0,
+      balance: 0,
+      completionStatus: "",
+      daysUntilDue: 0
+    });
     setOpenAddDialog(true);
   };
 
@@ -70,11 +90,20 @@ const SchoolInvoices = ({ theme }) => {
   const handleSaveInvoice = () => {
     if (selectedInvoice) {
       setInvoices(invoices.map(inv => (inv.invoiceNumber === selectedInvoice.invoiceNumber ? selectedInvoice : inv)));
+      handleCloseEditDialog();
     } else {
-      setInvoices([...invoices, selectedInvoice!]);
+      setInvoices([...invoices, newInvoice as Invoice]);
+      handleCloseAddDialog();
     }
-    handleCloseAddDialog();
-    handleCloseEditDialog();
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (selectedInvoice) {
+      setSelectedInvoice({ ...selectedInvoice, [name]: name === 'amountDue' || name === 'paidAmount' || name === 'balance' || name === 'daysUntilDue' ? +value : value });
+    } else {
+      setNewInvoice({ ...newInvoice, [name]: name === 'amountDue' || name === 'paidAmount' || name === 'balance' || name === 'daysUntilDue' ? +value : value });
+    }
   };
 
   if (isLoading) return <Typography>Loading...</Typography>;
@@ -157,99 +186,81 @@ const SchoolInvoices = ({ theme }) => {
           <TextField
             margin="normal"
             label="Invoice Number"
+            name="invoiceNumber"
             fullWidth
-            disabled={selectedInvoice ? true : false} // Disable for editing
-            value={selectedInvoice ? selectedInvoice.invoiceNumber : ''}
-            onChange={(e) => setSelectedInvoice((prevState) => ({
-              ...prevState!,
-              invoiceNumber: e.target.value
-            }))}
+            disabled={!!selectedInvoice} // Disable for editing
+            value={selectedInvoice ? selectedInvoice.invoiceNumber : newInvoice.invoiceNumber}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
             label="Invoice Item"
+            name="invoiceItem"
             fullWidth
-            value={selectedInvoice ? selectedInvoice.invoiceItem : ''}
-            onChange={(e) => setSelectedInvoice((prevState) => ({
-              ...prevState!,
-              invoiceItem: e.target.value
-            }))}
+            value={selectedInvoice ? selectedInvoice.invoiceItem : newInvoice.invoiceItem}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
             label="Creation Date"
+            name="creationDate"
             type="date"
             fullWidth
-            value={selectedInvoice ? selectedInvoice.creationDate : ''}
-            onChange={(e) => setSelectedInvoice((prevState) => ({
-              ...prevState!,
-              creationDate: e.target.value
-            }))}
+            value={selectedInvoice ? selectedInvoice.creationDate : newInvoice.creationDate}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
             label="Due Date"
+            name="dueDate"
             type="date"
             fullWidth
-            value={selectedInvoice ? selectedInvoice.dueDate : ''}
-            onChange={(e) => setSelectedInvoice((prevState) => ({
-              ...prevState!,
-              dueDate: e.target.value
-            }))}
+            value={selectedInvoice ? selectedInvoice.dueDate : newInvoice.dueDate}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
             label="Amount Due"
+            name="amountDue"
             type="number"
             fullWidth
-            value={selectedInvoice ? selectedInvoice.amountDue : ''}
-            onChange={(e) => setSelectedInvoice((prevState) => ({
-              ...prevState!,
-              amountDue: +e.target.value
-            }))}
+            value={selectedInvoice ? selectedInvoice.amountDue : newInvoice.amountDue}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
             label="Paid Amount"
+            name="paidAmount"
             type="number"
             fullWidth
-            value={selectedInvoice ? selectedInvoice.paidAmount : ''}
-            onChange={(e) => setSelectedInvoice((prevState) => ({
-              ...prevState!,
-              paidAmount: +e.target.value
-            }))}
+            value={selectedInvoice ? selectedInvoice.paidAmount : newInvoice.paidAmount}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
             label="Balance"
+            name="balance"
             type="number"
             fullWidth
-            value={selectedInvoice ? selectedInvoice.balance : ''}
-            onChange={(e) => setSelectedInvoice((prevState) => ({
-              ...prevState!,
-              balance: +e.target.value
-            }))}
+            value={selectedInvoice ? selectedInvoice.balance : newInvoice.balance}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
             label="Completion Status"
+            name="completionStatus"
             fullWidth
-            value={selectedInvoice ? selectedInvoice.completionStatus : ''}
-            onChange={(e) => setSelectedInvoice((prevState) => ({
-              ...prevState!,
-              completionStatus: e.target.value
-            }))}
+            value={selectedInvoice ? selectedInvoice.completionStatus : newInvoice.completionStatus}
+            onChange={handleInputChange}
           />
           <TextField
             margin="normal"
             label="Days Until Due"
+            name="daysUntilDue"
             type="number"
             fullWidth
-            value={selectedInvoice ? selectedInvoice.daysUntilDue : ''}
-            onChange={(e) => setSelectedInvoice((prevState) => ({
-              ...prevState!,
-              daysUntilDue: +e.target.value
-            }))}
+            value={selectedInvoice ? selectedInvoice.daysUntilDue : newInvoice.daysUntilDue}
+            onChange={handleInputChange}
           />
         </DialogContent>
         <DialogActions>
