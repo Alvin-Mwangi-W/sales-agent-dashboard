@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useGetInvoicesQuery } from "@/state/api";
+import { Invoice } from "@/state/types";
 import {
   Box,
   Typography,
@@ -22,16 +25,24 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useGetInvoicesQuery, useDeleteInvoiceMutation } from "@/state/api"; // Import useDeleteInvoiceMutation
-import { Invoice } from "@/state/types";
+
+//import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "@/theme";
 
-const SchoolInvoices = () => {
-  const { data: invoices, isLoading, error, refetch } = useGetInvoicesQuery();
-  const [deleteInvoice] = useDeleteInvoiceMutation(); // Mutation hook for deleting an invoice
+//@ts-expect-error
+const SchoolInvoices = ({ theme }) => {
+  const { data: invoicesData, isLoading, error } = useGetInvoicesQuery();
+
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+
+  useEffect(() => {
+    if (invoicesData) {
+      setInvoices(invoicesData);
+    }
+  }, [invoicesData]);
 
   const handleOpenAddDialog = () => {
     setSelectedInvoice(null);
@@ -52,36 +63,22 @@ const SchoolInvoices = () => {
     setOpenEditDialog(false);
   };
 
-  const handleDeleteInvoice = async (invoice: Invoice) => {
-    try {
-      // Call the deleteInvoice mutation function with the invoice object
-      await deleteInvoice(invoice);
-      console.log(`Deleted invoice ${invoice.invoiceNumber}`);
-      await refetch(); // Refetch the invoices after deletion
-    } catch (error) {
-      console.error("Error deleting invoice:", error);
-    }
+  const handleDeleteInvoice = (invoice: Invoice) => {
+    setInvoices(invoices.filter(inv => inv.invoiceNumber !== invoice.invoiceNumber));
   };
 
-  const handleSaveInvoice = async () => {
-    try {
-      if (selectedInvoice) {
-        // Handle update logic if selectedInvoice exists
-        console.log("Updating invoice:", selectedInvoice);
-      } else {
-        // Handle add new invoice logic if selectedInvoice does not exist
-        console.log("Adding new invoice:", selectedInvoice);
-      }
-      handleCloseAddDialog();
-      handleCloseEditDialog();
-      await refetch(); 
-    } catch (error) {
-      console.error("Error saving invoice:", error);
+  const handleSaveInvoice = () => {
+    if (selectedInvoice) {
+      setInvoices(invoices.map(inv => (inv.invoiceNumber === selectedInvoice.invoiceNumber ? selectedInvoice : inv)));
+    } else {
+      setInvoices([...invoices, selectedInvoice!]);
     }
+    handleCloseAddDialog();
+    handleCloseEditDialog();
   };
 
   if (isLoading) return <Typography>Loading...</Typography>;
-  // @ts-expect-error
+  //@ts-expect-error
   if (error) return <Typography>Error: {error.message}</Typography>;
 
   return (
@@ -118,7 +115,7 @@ const SchoolInvoices = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {invoices?.map((invoice) => (
+            {invoices.map((invoice) => (
               <TableRow key={invoice.invoiceNumber} sx={{ '&:nth-of-type(odd)': { backgroundColor: themeSettings.palette.background.default } }}>
                 <TableCell sx={{ color: themeSettings.palette.text.secondary }}>{invoice.invoiceNumber}</TableCell>
                 <TableCell sx={{ color: themeSettings.palette.text.secondary }}>{invoice.invoiceItem}</TableCell>
@@ -161,7 +158,7 @@ const SchoolInvoices = () => {
             margin="normal"
             label="Invoice Number"
             fullWidth
-            disabled={selectedInvoice ? true : false} 
+            disabled={selectedInvoice ? true : false} // Disable for editing
             value={selectedInvoice ? selectedInvoice.invoiceNumber : ''}
             onChange={(e) => setSelectedInvoice((prevState) => ({
               ...prevState!,
