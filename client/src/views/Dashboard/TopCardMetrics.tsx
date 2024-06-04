@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Box, Card, CardContent, Grid, Typography, useTheme } from "@mui/material";
+import { Box, Card, CardContent, CircularProgress, Grid, Typography, useTheme } from "@mui/material";
 import { useGetMetricsQuery } from "../../state/api";
 
 const TopCardMetrics = () => {
   const theme = useTheme();
   const { data: metrics, isLoading, isError } = useGetMetricsQuery();
 
-  if (isLoading) return <Typography variant="h6">Loading metrics...</Typography>;
+  if (isLoading) return <CircularProgress />;
   if (isError) return <Typography variant="h6">Error fetching metrics</Typography>;
 
   return (

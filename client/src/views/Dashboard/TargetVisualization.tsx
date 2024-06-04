@@ -2,6 +2,7 @@
 import {
   Card,
   CardContent,
+  CircularProgress,
   Container,
   Grid,
   Typography,
@@ -22,7 +23,7 @@ const TargetVisualization = () => {
   const { data: signupData } = useGetSignupsQuery();
 
   if (!metrics || !signupData) {
-    return <Typography>Loading...</Typography>;
+    return <CircularProgress />;
   }
 
   const data = signupData.map((signup) => ({

@@ -28,6 +28,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 //import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "@/theme";
+import TableComponent from "@/components/TableComponent";
 
 //@ts-expect-error
 const SchoolInvoices = ({ theme }) => {
