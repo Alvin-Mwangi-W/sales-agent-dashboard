@@ -1,6 +1,7 @@
-import { useGetCollectionsQuery, useUpdateCollectionStatusMutation } from "@/state/api";
+import { useState, useEffect } from "react";
+import { useGetCollectionsQuery } from "@/state/api";
 import { Collection } from "@/state/types";
-import { 
+import {
   Typography,
   Box,
   TableContainer,
@@ -12,37 +13,40 @@ import {
   TableBody,
   Tooltip,
   IconButton,
-  useTheme
+  useTheme,
 } from "@mui/material";
-import GridCheckCircleIcon from "@mui/icons-material/CheckCircle"; // Corrected import
+import GridCheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { ResponsiveContainer } from "recharts";
+import BoxHeader from "@/components/BoxHeader";
 
 const CollectionsTable = () => {
   const theme = useTheme();
   const { data: collections = [], isLoading, isError } = useGetCollectionsQuery();
-  const [updateCollectionStatus] = useUpdateCollectionStatusMutation();
+  const [localCollections, setLocalCollections] = useState<Collection[]>([]);
+
+  // Initialize local state with fetched collections
+  useEffect(() => {
+    setLocalCollections(collections);
+  }, [collections]);
 
   if (isLoading) return <Typography variant="h6">Loading collections...</Typography>;
   if (isError) return <Typography variant="h6">Error fetching collections</Typography>;
 
-  const handleStatusChange = (collection: Collection, newStatus: "Valid" | "Bounced") => {
-    updateCollectionStatus({ collectionNumber: collection.collectionNumber, status: newStatus })
-      .unwrap()
-      .then(() => {
-        console.log(`Successfully updated status of collection ${collection.collectionNumber} to ${newStatus}`);
-      })
-      .catch((error) => {
-        console.error(`Failed to update status of collection ${collection.collectionNumber}`, error);
-      });
+  const handleStatusChange = (collectionNumber: string) => {
+    setLocalCollections((prevCollections) =>
+      prevCollections.map((collection) =>
+        collection.collectionNumber === collectionNumber
+          ? { ...collection, status: collection.status === "Valid" ? "Bounced" : "Valid" }
+          : collection
+      )
+    );
   };
 
   return (
     <ResponsiveContainer width="100%" height={"80%"}>
       <Box mt={3}>
-        <Typography variant="h5" gutterBottom>
-          Collections
-        </Typography>
+        <BoxHeader title="Collections" subtitle="" />
         <TableContainer component={Paper}>
           <Table aria-label="collections table">
             <TableHead>
@@ -56,7 +60,7 @@ const CollectionsTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {collections.map((collection) => (
+              {localCollections.map((collection) => (
                 <TableRow key={collection.collectionNumber} sx={{ backgroundColor: theme.palette.grey[800] }}>
                   <TableCell sx={{ color: theme.palette.grey[300] }}>{collection.invoiceNumber}</TableCell>
                   <TableCell sx={{ color: theme.palette.grey[300] }}>{collection.collectionNumber}</TableCell>
@@ -75,7 +79,7 @@ const CollectionsTable = () => {
                   <TableCell sx={{ color: theme.palette.grey[300] }}>{collection.amountCollected}</TableCell>
                   <TableCell>
                     <IconButton
-                      onClick={() => handleStatusChange(collection, collection.status === "Valid" ? "Bounced" : "Valid")}
+                      onClick={() => handleStatusChange(collection.collectionNumber)}
                     >
                       {collection.status === "Valid" ? (
                         <HighlightOffIcon style={{ color: theme.palette.error.main }} />
