@@ -22,6 +22,7 @@ import {
   IconButton,
   Tooltip,
   Grid,
+  CircularProgress,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -107,7 +108,7 @@ const SchoolInvoices = ({ theme }) => {
     }
   };
 
-  if (isLoading) return <Typography>Loading...</Typography>;
+  if (isLoading) return <CircularProgress />;
   //@ts-expect-error
   if (error) return <Typography>Error: {error.message}</Typography>;
 

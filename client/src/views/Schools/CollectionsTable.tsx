@@ -14,6 +14,7 @@ import {
   Tooltip,
   IconButton,
   useTheme,
+  CircularProgress,
 } from "@mui/material";
 import GridCheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -30,7 +31,7 @@ const CollectionsTable = () => {
     setLocalCollections(collections);
   }, [collections]);
 
-  if (isLoading) return <Typography variant="h6">Loading collections...</Typography>;
+  if (isLoading) return <CircularProgress />;
   if (isError) return <Typography variant="h6">Error fetching collections</Typography>;
 
   const handleStatusChange = (collectionNumber: string) => {
