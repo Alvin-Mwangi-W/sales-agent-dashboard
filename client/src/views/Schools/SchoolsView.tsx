@@ -13,7 +13,8 @@ import {
   DialogContent,
   DialogActions,
   Divider,
-  useTheme
+  useTheme,
+  CircularProgress
 } from '@mui/material';
 
 const SchoolsView = () => {
@@ -47,7 +48,7 @@ const SchoolsView = () => {
     return collections.filter(collection => collection.schoolName === selectedSchool.name);
   }, [selectedSchool, collections]);
 
-  if (schoolsLoading || invoicesLoading || collectionsLoading) return <Typography>Loading...</Typography>;
+  if (schoolsLoading || invoicesLoading || collectionsLoading) return <CircularProgress />;
   // @ts-expect-error
   if (schoolsError || invoicesError || collectionsError) return <Typography>Error: {schoolsError?.message || invoicesError?.message || collectionsError?.message}</Typography>;
 
