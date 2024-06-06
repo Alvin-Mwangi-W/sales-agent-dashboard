@@ -113,12 +113,12 @@ const SchoolInvoices = ({ theme }) => {
   if (error) return <Typography>Error: {error.message}</Typography>;
 
   return (
-    <Box>
+    <Box mt={"10px"}>
       <Typography variant="h4" gutterBottom style={{ color: themeSettings.palette.text.primary }}>
         School Invoices
       </Typography>
 
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ mb: 2}}>
         <Button
           variant="contained"
           color="primary"
@@ -182,15 +182,15 @@ const SchoolInvoices = ({ theme }) => {
       </TableContainer>
 
       {/* Add/Edit Invoice Dialog */}
-      <Dialog open={openAddDialog || openEditDialog} onClose={handleCloseAddDialog || handleCloseEditDialog} maxWidth="sm" fullWidth>
-        <DialogTitle>{selectedInvoice ? 'Edit Invoice' : 'Add New Invoice'}</DialogTitle>
-        <DialogContent>
+      <Dialog open={openAddDialog || openEditDialog} onClose={handleCloseAddDialog || handleCloseEditDialog} maxWidth="sm" fullWidth >
+        <DialogTitle sx={{backgroundColor: themeSettings.palette.grey[800]}}>{selectedInvoice ? 'Edit Invoice' : 'Add New Invoice'}</DialogTitle>
+        <DialogContent sx={{backgroundColor: themeSettings.palette.grey[800]}}>
           <TextField
             margin="normal"
             label="Invoice Number"
             name="invoiceNumber"
             fullWidth
-            disabled={!!selectedInvoice} // Disable for editing
+            disabled={!!selectedInvoice}
             value={selectedInvoice ? selectedInvoice.invoiceNumber : newInvoice.invoiceNumber}
             onChange={handleInputChange}
           />
@@ -261,11 +261,12 @@ const SchoolInvoices = ({ theme }) => {
             name="daysUntilDue"
             type="number"
             fullWidth
+            sx = {{color: themeSettings.palette.grey[800]}}
             value={selectedInvoice ? selectedInvoice.daysUntilDue : newInvoice.daysUntilDue}
             onChange={handleInputChange}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{backgroundColor: themeSettings.palette.grey[800]}}>
           <Button onClick={selectedInvoice ? handleCloseEditDialog : handleCloseAddDialog} color="secondary">
             Cancel
           </Button>

@@ -46,9 +46,9 @@ const CollectionsTable = () => {
 
   return (
     <ResponsiveContainer width="100%" height={"80%"}>
-      <Box mt={3}>
+      <Box mt={6}>
         <BoxHeader title="Collections" subtitle="" />
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{mt: 2}}>
           <Table aria-label="collections table">
             <TableHead>
               <TableRow sx={{ backgroundColor: theme.palette.grey[900] }}>
